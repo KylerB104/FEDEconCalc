@@ -13,6 +13,8 @@
         <h1>Regional Economy Console</h1>
       </div>
       <div class="header-actions">
+        <button id="toggleTutorial" type="button">Tutorial</button>
+        <button id="sampleSierra" type="button">Example Fill</button>
         <button id="clearRegion" type="button">Clear Region</button>
         <button id="exportSnapshot" type="button">Export Snapshot</button>
       </div>
@@ -136,6 +138,22 @@
       </aside>
 
       <section class="workspace">
+        <section class="tutorial-card" id="tutorialCard">
+          <div class="panel-heading">
+            <h2>How To Use This Tool</h2>
+            <button id="closeTutorial" type="button">Hide</button>
+          </div>
+          <ol>
+            <li><strong>Pick a region.</strong> The app only fills that region's 1956 GDP base. It does not fill the budget for you.</li>
+            <li><strong>Enter old numbers.</strong> Put the pre-budget tax revenue, tax rates, and department spending in the Old columns.</li>
+            <li><strong>Enter new numbers.</strong> Put the proposed budget's tax revenue, tax rates, and department spending in the New columns.</li>
+            <li><strong>Add real-world context.</strong> Use the sliders for business climate, labor protection, housing pressure, and infrastructure stress.</li>
+            <li><strong>Fill the narrative fields.</strong> Add hardest-hit metro, strongest metro, hardest-hit sector, strongest sector, and infrastructure pressure.</li>
+            <li><strong>Read the output.</strong> The snapshot, budget table, and charts update automatically. Use Copy or Export Snapshot when finished.</li>
+          </ol>
+          <p class="tutorial-note">Use <strong>Example Fill</strong> only when you want to see the Sierra sample format. It is a demo, not a default.</p>
+        </section>
+
         <nav class="region-tabs" id="regionTabs" aria-label="Region quick select"></nav>
 
         <section class="metric-band" aria-label="Key metrics">

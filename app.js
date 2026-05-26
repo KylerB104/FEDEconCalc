@@ -198,6 +198,68 @@ function placeholder(value, fallback) {
   return value && value.trim() ? value.trim() : fallback;
 }
 
+function fillSierraExample() {
+  activeRegion = "Sierra";
+  const data = blankRegion("Sierra");
+  data.unemployment = "4.6";
+  data.laborForce = "15.2";
+  data.households = "8.5";
+  data.debt = "0";
+  data.spending.transit.old = "1.00";
+  data.spending.transit.new = "1.30";
+  data.spending.education.old = "1.20";
+  data.spending.education.new = "1.60";
+  data.spending.commerce.old = "0.45";
+  data.spending.commerce.new = "0.55";
+  data.spending.urban.old = "0.55";
+  data.spending.urban.new = "0.80";
+  data.spending.safety.old = "0.75";
+  data.spending.safety.new = "0.85";
+  data.spending.health.old = "0.80";
+  data.spending.health.new = "1.00";
+  data.spending.governor.old = "0.08";
+  data.spending.governor.new = "0.06";
+  data.taxes.income.oldRate = "4.5";
+  data.taxes.income.oldRevenue = "2.08";
+  data.taxes.income.newRate = "5.5";
+  data.taxes.income.newRevenue = "2.55";
+  data.taxes.sales.oldRate = "3.0";
+  data.taxes.sales.oldRevenue = "1.21";
+  data.taxes.sales.newRate = "4.0";
+  data.taxes.sales.newRevenue = "1.61";
+  data.taxes.corporate.oldRate = "6.0";
+  data.taxes.corporate.oldRevenue = "1.91";
+  data.taxes.corporate.newRate = "8.0";
+  data.taxes.corporate.newRevenue = "2.54";
+  data.taxes.sin.oldRate = "12.0";
+  data.taxes.sin.oldRevenue = "0.65";
+  data.taxes.sin.newRate = "12.0";
+  data.taxes.sin.newRevenue = "0.65";
+  data.taxes.gas.oldRate = "0.5";
+  data.taxes.gas.oldRevenue = "0.09";
+  data.taxes.gas.newRate = "0.7";
+  data.taxes.gas.newRevenue = "0.13";
+  data.taxes.port.oldRate = "6.0";
+  data.taxes.port.oldRevenue = "0.64";
+  data.taxes.port.newRate = "5.5";
+  data.taxes.port.newRevenue = "0.59";
+  data.businessClimate = 2;
+  data.laborProtection = 1;
+  data.housingPressure = 7;
+  data.infrastructureStress = 7;
+  data.notes = "Defense aviation procurement, electronics expansion, suburban housing tracts, timber oversupply, Pacific lumber export slowdown.";
+  data.hardMetro = "Hoquiam-Aberdeen, WA";
+  data.hardReason = "Timber oversupply and slowing Pacific lumber export pricing";
+  data.strongMetro = "Los Angeles-Long Beach, CA";
+  data.strongReason = "Defense aviation, suburban housing tracts, and entertainment are expanding quickly";
+  data.weakSector = "Timber & Metal Mining";
+  data.strongSector = "Aerospace, Electronics, & Residential Construction";
+  data.infrastructure = "Roads & Water Grid";
+  state.Sierra = data;
+  syncFormFromState();
+  render();
+}
+
 function buildSnapshot(region) {
   if (!regionReady(region)) return "Select a region and enter old/new budget data to generate a snapshot.";
   const data = state[region];
@@ -549,6 +611,13 @@ function wireEvents() {
     state[activeRegion] = blankRegion(activeRegion);
     syncFormFromState();
     render();
+  });
+  $("sampleSierra").addEventListener("click", fillSierraExample);
+  $("toggleTutorial").addEventListener("click", () => {
+    $("tutorialCard").classList.toggle("hidden");
+  });
+  $("closeTutorial").addEventListener("click", () => {
+    $("tutorialCard").classList.add("hidden");
   });
   $("comparisonMetric").addEventListener("change", render);
   $("copySnapshot").addEventListener("click", async () => {
