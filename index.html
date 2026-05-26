@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mockgov Regional Economy Console</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Mockgov Economic Team</p>
+        <h1>Regional Economy Console</h1>
+      </div>
+      <div class="header-actions">
+        <button id="clearRegion" type="button">Clear Region</button>
+        <button id="exportSnapshot" type="button">Export Snapshot</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Region controls">
+        <label class="field">
+          <span>Region</span>
+          <select id="regionSelect"></select>
+        </label>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Scenario</h2>
+            <button id="resetRegion" type="button" aria-label="Reset selected region">Reset</button>
+          </div>
+          <label class="field">
+            <span>Year</span>
+            <input id="yearInput" type="number" min="1800" max="2200" step="1" />
+          </label>
+          <label class="field">
+            <span>1956 GDP ($B)</span>
+            <input id="baseGdpInput" type="number" step="0.1" min="0" />
+          </label>
+          <label class="field">
+            <span>Old unemployment (%)</span>
+            <input id="baseUnemploymentInput" type="number" step="0.1" />
+          </label>
+          <label class="field">
+            <span>Labor force (millions)</span>
+            <input id="laborForceInput" type="number" step="0.1" min="0" />
+          </label>
+          <label class="field">
+            <span>Households (millions)</span>
+            <input id="householdsInput" type="number" step="0.1" min="0" />
+          </label>
+          <label class="field">
+            <span>Current debt ($B)</span>
+            <input id="debtInput" type="number" step="0.1" min="0" />
+          </label>
+        </section>
+
+        <section class="panel">
+          <h2>Spending Inputs ($B)</h2>
+          <div class="entry-header">
+            <span>Line Item</span>
+            <span>Old</span>
+            <span>New</span>
+          </div>
+          <div id="spendingInputs" class="entry-grid"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Tax Inputs</h2>
+          <div class="tax-entry-header">
+            <span>Tax</span>
+            <span>Old %</span>
+            <span>Old $B</span>
+            <span>New %</span>
+            <span>New $B</span>
+          </div>
+          <div id="taxInputs" class="tax-entry-grid"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Law & Pressure Inputs</h2>
+          <div class="slider-field">
+            <span>Business climate</span>
+            <input id="businessClimateInput" type="range" min="-5" max="5" step="1" />
+            <output id="businessClimateOutput"></output>
+          </div>
+          <div class="slider-field">
+            <span>Labor protection</span>
+            <input id="laborProtectionInput" type="range" min="-5" max="5" step="1" />
+            <output id="laborProtectionOutput"></output>
+          </div>
+          <div class="slider-field">
+            <span>Housing pressure</span>
+            <input id="housingPressureInput" type="range" min="0" max="10" step="1" />
+            <output id="housingPressureOutput"></output>
+          </div>
+          <div class="slider-field">
+            <span>Infrastructure stress</span>
+            <input id="infrastructureStressInput" type="range" min="0" max="10" step="1" />
+            <output id="infrastructureStressOutput"></output>
+          </div>
+          <label class="field">
+            <span>Policy notes</span>
+            <textarea id="policyNotesInput" rows="4"></textarea>
+          </label>
+          <label class="field">
+            <span>Hardest-hit metro / area</span>
+            <input id="hardMetroInput" type="text" />
+          </label>
+          <label class="field">
+            <span>Why hardest hit?</span>
+            <textarea id="hardReasonInput" rows="2"></textarea>
+          </label>
+          <label class="field">
+            <span>Strongest metro / area</span>
+            <input id="strongMetroInput" type="text" />
+          </label>
+          <label class="field">
+            <span>Why strongest?</span>
+            <textarea id="strongReasonInput" rows="2"></textarea>
+          </label>
+          <label class="field">
+            <span>Hardest-hit sector</span>
+            <input id="weakSectorInput" type="text" />
+          </label>
+          <label class="field">
+            <span>Strongest sector</span>
+            <input id="strongSectorInput" type="text" />
+          </label>
+          <label class="field">
+            <span>Infrastructure / transport pressure</span>
+            <input id="infrastructureInput" type="text" />
+          </label>
+        </section>
+      </aside>
+
+      <section class="workspace">
+        <nav class="region-tabs" id="regionTabs" aria-label="Region quick select"></nav>
+
+        <section class="metric-band" aria-label="Key metrics">
+          <article>
+            <span>GDP Growth</span>
+            <strong id="gdpMetric"></strong>
+          </article>
+          <article>
+            <span>Unemployment</span>
+            <strong id="unemploymentMetric"></strong>
+          </article>
+          <article>
+            <span>Budget Result</span>
+            <strong id="budgetMetric"></strong>
+          </article>
+          <article>
+            <span>Overall</span>
+            <strong id="overallMetric"></strong>
+          </article>
+        </section>
+
+        <section class="chart-row">
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <h2>Regional Comparison</h2>
+              <select id="comparisonMetric" aria-label="Comparison metric">
+                <option value="gdp">GDP growth</option>
+                <option value="jobs">Jobs</option>
+                <option value="budget">Budget result</option>
+                <option value="strain">Household strain</option>
+              </select>
+            </div>
+            <canvas id="comparisonChart" width="900" height="340"></canvas>
+          </article>
+          <article class="chart-panel">
+            <h2>Selected Region Breakdown</h2>
+            <canvas id="breakdownChart" width="500" height="340"></canvas>
+          </article>
+        </section>
+
+        <section class="snapshot-layout">
+          <article class="snapshot-card">
+            <div class="panel-heading">
+              <h2>Generated Snapshot</h2>
+              <button id="copySnapshot" type="button">Copy</button>
+            </div>
+            <pre id="snapshotOutput"></pre>
+          </article>
+
+          <article class="table-card">
+            <h2>Budget Table</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Line Item</th>
+                  <th>Old</th>
+                  <th>New</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody id="budgetTable"></tbody>
+            </table>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
